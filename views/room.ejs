@@ -12,6 +12,7 @@
       defer
       src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js"
     ></script>
+    <!--  -->
     <script async src="https://docs.opencv.org/3.4/opencv.js"></script>
     <script src="/socket.io/socket.io.js" defer></script>
     <script src="script.js" defer></script>
@@ -119,7 +120,8 @@
       <div class="videoBox">
         <div id="video-grid"></div>
         </div>
-        <canvas id='output'></canvas>
+        <!--  -->
+        <canvas id='output' onClick = "clickCanvas(window.event)"></canvas>
     <div id="displayBox"></div>
     <canvas class='whiteboard' id='<%= roomId %>'></canvas>
     </div>

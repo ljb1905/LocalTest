@@ -42,25 +42,27 @@ function printz(x)  //디버그용
   console.log(x)
 }
 
+// 
 function loops()
 {
   var widthtest = 160;
   var heighttest = 120;
-  console.log(widthtest);
-  console.log(heighttest);
   const test = document.getElementById('output');
-  test.width = widthtest; test.height = heighttest;
-  console.log("asdfasdf");
-    let src = new cv.Mat(heighttest, widthtest, cv.CV_8UC4);
-    console.log(src);
-    let dst = new cv.Mat(heighttest, widthtest, cv.CV_8UC1);
-    let cap = new cv.VideoCapture(myVideo);
-    console.log(cap);
-    cap.read(src);
-    cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
-    cv.imshow(test,dst);
-    // userBox.appendChild(dst)
+  let src = new cv.Mat(heighttest, widthtest, cv.CV_8UC4);
+    // let dst = new cv.Mat(heighttest, widthtest, cv.CV_8UC1);
+  let cap = new cv.VideoCapture(myVideo);
+  cap.read(src);
+    // cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
+    //cv.imshow(test,dst);
+  cv.imshow(test,src);
+    // // userBox.appendChild(dst)
   setTimeout(loops, 50)
+}
+function clickCanvas(event){
+  console.log('test');
+  var x = event.offsetX;
+  var y = event.offsetY;
+  alert("현재 좌표는 : "+x+" / " +y);
 }
 
 function userJoin(stream, stream2)
@@ -214,6 +216,7 @@ function connectToNewUser(userId, userName) { //기존 유저 입장에서 새�
 function addVideoStream(video, stream, userBox) {
   video.srcObject = stream
   video.addEventListener('loadedmetadata', () => {
+    // 
     video.width = 160;
     video.height = 120;
     video.play()
