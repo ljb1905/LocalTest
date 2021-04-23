@@ -43,29 +43,87 @@ function printz(x)  //디버그용
 }
 
 // 
+function rgb2hsv (r, g, b) {
+  let rabs, gabs, babs, rr, gg, bb, h, s, v, diff, diffc, percentRoundFn;
+  rabs = r / 255;
+  gabs = g / 255;
+  babs = b / 255;
+  v = Math.max(rabs, gabs, babs),
+  diff = v - Math.min(rabs, gabs, babs);
+  diffc = c => (v - c) / 6 / diff + 1 / 2;
+  percentRoundFn = num => Math.round(num * 100) / 100;
+  if (diff == 0) {
+      h = s = 0;
+  } else {
+      s = diff / v;
+      rr = diffc(rabs);
+      gg = diffc(gabs);
+      bb = diffc(babs);
+
+      if (rabs === v) {
+          h = bb - gg;
+      } else if (gabs === v) {
+          h = (1 / 3) + rr - bb;
+      } else if (babs === v) {
+          h = (2 / 3) + gg - rr;
+      }
+      if (h < 0) {
+          h += 1;
+      }else if (h > 1) {
+          h -= 1;
+      }
+  }
+  return {
+      h: Math.round(h * 360),
+      s: percentRoundFn(s * 100),
+      v: percentRoundFn(v * 100)
+  };
+}
 function loops()
 {
   var widthtest = 160;
   var heighttest = 120;
   const test = document.getElementById('output');
   let src = new cv.Mat(heighttest, widthtest, cv.CV_8UC4);
-    // let dst = new cv.Mat(heighttest, widthtest, cv.CV_8UC1);
   let cap = new cv.VideoCapture(myVideo);
   cap.read(src);
-    // cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
-    //cv.imshow(test,dst);
   cv.imshow(test,src);
-    // // userBox.appendChild(dst)
+  // const colorout = document.getElementById('coloroutput');
+  // cv.imshow(colorout,src);
   setTimeout(loops, 50)
 }
-// function f_to_ub(n){
-//   return ("000" + n).slice(-3);
-// }
+function fun_mask(R,G,B){
+  var widthtest = 160;
+  var heighttest = 120;
+  const colorout = document.getElementById('coloroutput');
+  let tmp = new cv.Mat(heighttest, widthtest, cv.CV_8UC4);
+  let cap = new cv.VideoCapture(myVideo);
+  cap.read(tmp);
+  cv.imshow(colorout,tmp);
+  console.log(R);
+  console.log(G);
+  console.log(B);
+  const out = document.getElementById('coloroutput')
+  let ctx = out.getContext("2d");
+  let imgData = ctx.getImageData(0, 0, 160, 120);
+  let src = cv.matFromImageData(imgData);
+  let dst = new cv.Mat();
+  var thr = 30;
+  let low = new cv.Mat(src.rows, src.cols, src.type(), [R-thr, G-thr, B-thr, 0]);
+  let high = new cv.Mat(src.rows, src.cols, src.type(), [R+thr, G+thr, B+thr, 255]);
+  
+  cv.inRange(src, low, high, dst);
+  //let tmpimg = new cv.Mat();
+  //cv.cvtColor(src, tmpimg, cv.COLOR_RGBA2GRAY,0);
+  
+  //cv.imshow(out,tmpimg);
+  let ret = new cv.Mat();
+  cv.bitwise_and(src, src, ret, dst);
+  cv.imshow(out, ret);
+}
 function clickCanvas(event){
-  var img = new Image ();
   const test = document.getElementById('output');
   var ctx = test.getContext('2d');
-  ctx.drawImage(img, 0, 0);
   var imageData = ctx.getImageData(0, 0, 160, 120);
   imageData.getRGBA = function(i,j,k){
     return this.data[this.width*4*j+4*i+k];
@@ -79,8 +137,8 @@ function clickCanvas(event){
   console.log("R : "+R +", G : ," + G + " B : " + B);
   const ctest = document.getElementById('colortest').getContext("2d");
   ctest.fillStyle = "rgb("+R+","+G+","+B+")";
-  console.log(ctest);
-  ctest.fillRect(10,10,30,30);
+  ctest.fillRect(0,0,50,50);
+  fun_mask(R,G,B);
 }
 
 function userJoin(stream, stream2)

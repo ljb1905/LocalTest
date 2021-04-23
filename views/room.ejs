@@ -34,13 +34,17 @@
         position:relative;
       }
       /*  */
-      output {
+      #output {
         width: 160px;
         height: 120px;        
       }
-      colortest {
+      #colortest {
         width: 50px;
         height: 50px;
+      }
+      #coloroutput {
+        width: 160px;
+        height: 120px;
       }
       userBox {
         width: 180px;
@@ -127,7 +131,7 @@
         </div>
         <!--  -->
         <canvas id='output' onClick = "clickCanvas(window.event)"></canvas>
-        <canvas id='colortest' ></canvas>
+        <canvas id='coloroutput'></canvas>
     <div id="displayBox"></div>
     <canvas class='whiteboard' id='<%= roomId %>'></canvas>
     </div>
