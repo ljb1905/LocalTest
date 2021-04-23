@@ -58,9 +58,9 @@ function loops()
     // // userBox.appendChild(dst)
   setTimeout(loops, 50)
 }
-function f_to_ub(n){
-  return ("000" + n).slice(-3);
-}
+// function f_to_ub(n){
+//   return ("000" + n).slice(-3);
+// }
 function clickCanvas(event){
   var img = new Image ();
   const test = document.getElementById('output');
@@ -73,9 +73,14 @@ function clickCanvas(event){
   var x = event.offsetX;
   var y = event.offsetY;
   alert("현재 좌표는 : "+x+" / " +y);
-  console.log(f_to_ub(imageData.getRGBA(x,y,0)));
-  console.log(f_to_ub(imageData.getRGBA(x,y,1)));
-  console.log(f_to_ub(imageData.getRGBA(x,y,2)));
+  var R = imageData.getRGBA(x,y,0);
+  var G = imageData.getRGBA(x,y,1);
+  var B = imageData.getRGBA(x,y,2);
+  console.log("R : "+R +", G : ," + G + " B : " + B);
+  const ctest = document.getElementById('colortest').getContext("2d");
+  ctest.fillStyle = "rgb("+R+","+G+","+B+")";
+  console.log(ctest);
+  ctest.fillRect(10,10,30,30);
 }
 
 function userJoin(stream, stream2)
