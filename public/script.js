@@ -58,11 +58,24 @@ function loops()
     // // userBox.appendChild(dst)
   setTimeout(loops, 50)
 }
+function f_to_ub(n){
+  return ("000" + n).slice(-3);
+}
 function clickCanvas(event){
-  console.log('test');
+  var img = new Image ();
+  const test = document.getElementById('output');
+  var ctx = test.getContext('2d');
+  ctx.drawImage(img, 0, 0);
+  var imageData = ctx.getImageData(0, 0, 160, 120);
+  imageData.getRGBA = function(i,j,k){
+    return this.data[this.width*4*j+4*i+k];
+  };
   var x = event.offsetX;
   var y = event.offsetY;
   alert("현재 좌표는 : "+x+" / " +y);
+  console.log(f_to_ub(imageData.getRGBA(x,y,0)));
+  console.log(f_to_ub(imageData.getRGBA(x,y,1)));
+  console.log(f_to_ub(imageData.getRGBA(x,y,2)));
 }
 
 function userJoin(stream, stream2)
