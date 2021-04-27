@@ -135,7 +135,7 @@ function clickCanvas(event){
   var G = imageData.getRGBA(x,y,1);
   var B = imageData.getRGBA(x,y,2);
   console.log("R : "+R +", G : ," + G + " B : " + B);
-  const ctest = document.getElementById('colortest').getContext("2d");
+  const ctest = document.getElementById('coloroutput').getContext("2d");
   ctest.fillStyle = "rgb("+R+","+G+","+B+")";
   ctest.fillRect(0,0,50,50);
   fun_mask(R,G,B);
