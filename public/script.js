@@ -81,8 +81,8 @@ function rgb2hsv (r, g, b) {
 }
 function loops()
 {
-  var widthtest = 160;
-  var heighttest = 120;
+  var widthtest = 480;
+  var heighttest = 360;
   const test = document.getElementById('output');
   let src = new cv.Mat(heighttest, widthtest, cv.CV_8UC4);
   let cap = new cv.VideoCapture(myVideo);
@@ -93,8 +93,8 @@ function loops()
   setTimeout(loops, 50)
 }
 function fun_mask(R,G,B){
-  var widthtest = 160;
-  var heighttest = 120;
+  var widthtest = 480;
+  var heighttest = 360;
   const colorout = document.getElementById('coloroutput');
   let tmp = new cv.Mat(heighttest, widthtest, cv.CV_8UC4);
   let cap = new cv.VideoCapture(myVideo);
@@ -105,10 +105,10 @@ function fun_mask(R,G,B){
   console.log(B);
   const out = document.getElementById('coloroutput')
   let ctx = out.getContext("2d");
-  let imgData = ctx.getImageData(0, 0, 160, 120);
+  let imgData = ctx.getImageData(0, 0, 480, 360);
   let src = cv.matFromImageData(imgData);
   let dst = new cv.Mat();
-  var thr = 30;
+  var thr = 15;
   let low = new cv.Mat(src.rows, src.cols, src.type(), [R-thr, G-thr, B-thr, 0]);
   let high = new cv.Mat(src.rows, src.cols, src.type(), [R+thr, G+thr, B+thr, 255]);
   
@@ -124,7 +124,7 @@ function fun_mask(R,G,B){
 function clickCanvas(event){
   const test = document.getElementById('output');
   var ctx = test.getContext('2d');
-  var imageData = ctx.getImageData(0, 0, 160, 120);
+  var imageData = ctx.getImageData(0, 0, 480, 360);
   imageData.getRGBA = function(i,j,k){
     return this.data[this.width*4*j+4*i+k];
   };
@@ -293,8 +293,8 @@ function addVideoStream(video, stream, userBox) {
   video.srcObject = stream
   video.addEventListener('loadedmetadata', () => {
     // 
-    video.width = 160;
-    video.height = 120;
+    video.width = 480;
+    video.height = 360;
     video.play()
     loops()
   })
