@@ -107,6 +107,7 @@ function fun_mask(R,G,B){
   let ctx = out.getContext("2d");
   let imgData = ctx.getImageData(0, 0, 480, 360);
   let src = cv.matFromImageData(imgData);
+
   let dst = new cv.Mat();
   var thr = 15;
   let low = new cv.Mat(src.rows, src.cols, src.type(), [R-thr, G-thr, B-thr, 0]);
@@ -119,6 +120,38 @@ function fun_mask(R,G,B){
   //cv.imshow(out,tmpimg);
   let ret = new cv.Mat();
   cv.bitwise_and(src, src, ret, dst);
+
+  
+  cv.cvtColor(ret, ret, cv.COLOR_RGBA2GRAY, 0);
+  cv.threshold(ret, ret, 0, 200, cv.THRESH_BINARY);
+  let contours = new cv.MatVector();
+  let hierarchy = new cv.Mat();
+  
+  cv.findContours(ret, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
+
+  // let contourtest = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
+  // let contoursColor = new cv.Scalar(255, 255, 255);
+  // cv.drawContours(contourtest, contours, 0, contoursColor, 1, 8, hierarchy, 100);
+
+  var cntareas=[];
+  for(let i = 0;i<contours.size();i++){
+    cntareas.push(cv.contourArea(contours.get(i)));
+  }
+  console.log(cntareas);
+  let maxx = 0;
+  let anspoint = 0;
+  for(let i = 0;i<cntareas.length;i++){
+      if(maxx < cntareas[i]){
+        console.log(cntareas[i]);
+        maxx = cntareas[i];
+        anspoint = i;
+      }
+  }
+  let ans = contours.get(anspoint);
+  let rect = cv.boundingRect(ans);
+
+  console.log(rect.x, rect.y);
+
   cv.imshow(out, ret);
 }
 function clickCanvas(event){
